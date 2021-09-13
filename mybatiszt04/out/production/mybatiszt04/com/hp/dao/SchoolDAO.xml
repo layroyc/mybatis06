@@ -1,0 +1,222 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.hp.dao.SchoolDAO">
+  <resultMap id="BaseResultMap" type="com.hp.entity.School">
+    <id column="scid" jdbcType="INTEGER" property="scid" />
+    <result column="scName" jdbcType="VARCHAR" property="scname" />
+    <result column="scAdress" jdbcType="VARCHAR" property="scadress" />
+  </resultMap>
+  <sql id="Example_Where_Clause">
+    <where>
+      <foreach collection="oredCriteria" item="criteria" separator="or">
+        <if test="criteria.valid">
+          <trim prefix="(" prefixOverrides="and" suffix=")">
+            <foreach collection="criteria.criteria" item="criterion">
+              <choose>
+                <when test="criterion.noValue">
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue">
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue">
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue">
+                  and ${criterion.condition}
+                  <foreach close=")" collection="criterion.value" item="listItem" open="(" separator=",">
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Update_By_Example_Where_Clause">
+    <where>
+      <foreach collection="example.oredCriteria" item="criteria" separator="or">
+        <if test="criteria.valid">
+          <trim prefix="(" prefixOverrides="and" suffix=")">
+            <foreach collection="criteria.criteria" item="criterion">
+              <choose>
+                <when test="criterion.noValue">
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue">
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue">
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue">
+                  and ${criterion.condition}
+                  <foreach close=")" collection="criterion.value" item="listItem" open="(" separator=",">
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Base_Column_List">
+    scid, scName, scAdress
+  </sql>
+  <select id="selectByExample" parameterType="com.hp.entity.SchoolExample" resultMap="BaseResultMap">
+    select
+    <if test="distinct">
+      distinct
+    </if>
+    <include refid="Base_Column_List" />
+    from school
+    <if test="_parameter != null">
+      <include refid="Example_Where_Clause" />
+    </if>
+    <if test="orderByClause != null">
+      order by ${orderByClause}
+    </if>
+    <if test="limit != null">
+      <if test="offset != null">
+        limit ${offset}, ${limit}
+      </if>
+      <if test="offset == null">
+        limit ${limit}
+      </if>
+    </if>
+  </select>
+  <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from school
+    where scid = #{scid,jdbcType=INTEGER}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
+    delete from school
+    where scid = #{scid,jdbcType=INTEGER}
+  </delete>
+  <delete id="deleteByExample" parameterType="com.hp.entity.SchoolExample">
+    delete from school
+    <if test="_parameter != null">
+      <include refid="Example_Where_Clause" />
+    </if>
+  </delete>
+  <insert id="insert" parameterType="com.hp.entity.School">
+    insert into school (scid, scName, scAdress
+      )
+    values (#{scid,jdbcType=INTEGER}, #{scname,jdbcType=VARCHAR}, #{scadress,jdbcType=VARCHAR}
+      )
+  </insert>
+  <insert id="insertSelective" parameterType="com.hp.entity.School">
+    insert into school
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="scid != null">
+        scid,
+      </if>
+      <if test="scname != null">
+        scName,
+      </if>
+      <if test="scadress != null">
+        scAdress,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="scid != null">
+        #{scid,jdbcType=INTEGER},
+      </if>
+      <if test="scname != null">
+        #{scname,jdbcType=VARCHAR},
+      </if>
+      <if test="scadress != null">
+        #{scadress,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <select id="countByExample" parameterType="com.hp.entity.SchoolExample" resultType="java.lang.Long">
+    select count(*) from school
+    <if test="_parameter != null">
+      <include refid="Example_Where_Clause" />
+    </if>
+  </select>
+  <update id="updateByExampleSelective" parameterType="map">
+    update school
+    <set>
+      <if test="record.scid != null">
+        scid = #{record.scid,jdbcType=INTEGER},
+      </if>
+      <if test="record.scname != null">
+        scName = #{record.scname,jdbcType=VARCHAR},
+      </if>
+      <if test="record.scadress != null">
+        scAdress = #{record.scadress,jdbcType=VARCHAR},
+      </if>
+    </set>
+    <if test="_parameter != null">
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByExample" parameterType="map">
+    update school
+    set scid = #{record.scid,jdbcType=INTEGER},
+      scName = #{record.scname,jdbcType=VARCHAR},
+      scAdress = #{record.scadress,jdbcType=VARCHAR}
+    <if test="_parameter != null">
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByPrimaryKeySelective" parameterType="com.hp.entity.School">
+    update school
+    <set>
+      <if test="scname != null">
+        scName = #{scname,jdbcType=VARCHAR},
+      </if>
+      <if test="scadress != null">
+        scAdress = #{scadress,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where scid = #{scid,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.hp.entity.School">
+    update school
+    set scName = #{scname,jdbcType=VARCHAR},
+      scAdress = #{scadress,jdbcType=VARCHAR}
+    where scid = #{scid,jdbcType=INTEGER}
+  </update>
+
+  <resultMap id="selectStudentByIdRM" type="com.hp.entity.School" extends="BaseResultMap">
+    <collection property="clazzList" ofType="com.hp.entity.Clazz">
+      <id column="cid" jdbcType="INTEGER" property="cid" />
+      <result column="scid" jdbcType="INTEGER" property="scid" />
+      <result column="cname" jdbcType="VARCHAR" property="cname" />
+      <result column="Goodis" jdbcType="VARCHAR" property="goodis" />
+      <collection property="students" ofType="com.hp.entity.Student">
+        <id column="sid" jdbcType="INTEGER" property="sid" />
+        <result column="sName" jdbcType="VARCHAR" property="sname" />
+        <result column="sHobby" jdbcType="VARCHAR" property="shobby" />
+        <result column="cid" jdbcType="INTEGER" property="cid" />
+      </collection>
+    </collection>
+  </resultMap>
+
+  <!--学校-班级-学生 的  1 对多  对多的 查询-->
+  <select id="selectStudentById" resultMap="selectStudentByIdRM" parameterType="int">
+    select * from school sc join clazz c on sc.scid=c.scid join student st on c.cid=st.cid where st.sid=#{sid}
+  </select>
+  <select id="selectAllDongTai" resultType="map" parameterType="map">
+    select * from school sc join clazz c on sc.scid=c.scid join student st on c.cid=st.cid
+    <where>
+      <if test="sid != null">
+        st.sid = #{sid}
+      </if>
+      <if test="scName != null">
+        sc.scName = #{scName}
+      </if>
+    </where>
+  </select>
+
+
+</mapper>
